@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 
 public class JavaConnection {
- private static String dbURL = "jdbc:derby://localhost:1527/Logindb;create=true;user=moussa;password=moussa";
+     private static String dbURL = "jdbc:derby://localhost:1527//testDB;create=true;user=test;password=test";
     private static String tableName="STUDENTS";
     private static Connection conn;
     private static Statement st;

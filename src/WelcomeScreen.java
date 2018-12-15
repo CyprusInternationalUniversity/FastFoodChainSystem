@@ -8,9 +8,9 @@ import javax.swing.JOptionPane;
 
 
 public class WelcomeScreen extends javax.swing.JFrame {
-    Connection conn = JavaConnection.connectdb();
-    PreparedStatement ps ;
-    ResultSet rs ;
+   // Connection conn = JavaConnection.connectdb();
+    //PreparedStatement ps ;
+    //ResultSet rs ;
     
     
 
@@ -18,7 +18,7 @@ public class WelcomeScreen extends javax.swing.JFrame {
     public WelcomeScreen() {
         initComponents();
         this.setLocationRelativeTo(null);
-        JavaConnection.connectdb();
+        //JavaConnection.connectdb();
     }
 
    
@@ -176,56 +176,28 @@ public class WelcomeScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
-       /*
-        String login="SELECT * FROM logintable WHERE username=? AND password=?";
-        try{
-        
-            ps=conn.prepareStatement(login);
-            ps.setString(1,username.getText());
-            ps.setString(2,password.getText());
-            rs=ps.executeQuery();
-            if(rs.next()){
-            
-                JOptionPane.showMessageDialog(null,"Login Successfull....");
-                dispose();
-                new ProductForm().setVisible(true);
-            
-            }
-            else{
-              JOptionPane.showMessageDialog(null,"Login Faild...");
-                
-            }
-                } catch(SQLException ex){
-                    
-                    JOptionPane.showMessageDialog(null,ex);
-                            }
-        */
+      
         
     }//GEN-LAST:event_btnLoginMouseClicked
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-         String login="SELECT * FROM logintable WHERE username=? AND password=?";
-        try{
+         if(evt.getSource()== btnCancel){
+        this.username.setText("");
+        this.password.setText("");
+        this.username.requestFocus();// to see the cursor in begin
+        }
+        else if(evt.getSource()==btnLogin){
         
-            ps=conn.prepareStatement(login);
-            ps.setString(1,username.getText());
-            ps.setString(2,password.getText());
-            rs=ps.executeQuery();
-            if(rs.next()){
-            
-                JOptionPane.showMessageDialog(null,"Login Successfull....");
-                dispose();
-                new ProductForm().setVisible(true);
-            
-            }
-            else{
-              JOptionPane.showMessageDialog(null,"Login Faild...");
-                
-            }
-                } catch(SQLException ex){
-                    
-                    JOptionPane.showMessageDialog(null,ex);
-                            }
+        String uname = this.username.getText().toString();
+        String pwd = this.password.getText().toString();
+        
+        Login l = new Login(uname,pwd);
+        if(l.validateLogin()){
+        dispose();
+        ProductForm product = new ProductForm();
+        product.setVisible(true);
+        }
+        }
         
     }//GEN-LAST:event_btnLoginActionPerformed
 
