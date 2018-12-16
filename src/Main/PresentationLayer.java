@@ -1,3 +1,5 @@
+package Main;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +17,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -30,14 +34,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 /**
  *
  * @author User
  */
 public class PresentationLayer extends JFrame implements ActionListener {
-    
    
     List<Food> foods = new LinkedList<Food>();
+    private static int countItems = 0;
     private static String dbURL = "jdbc:derby://localhost:1527/App;create=true;user=fu;password=fu";
     private static String tableName="PRODUCTS";
     private static Connection conn;
@@ -53,10 +59,8 @@ public class PresentationLayer extends JFrame implements ActionListener {
     JLabel QuantityBasket  = new JLabel("Quantity to add in Basket");
     int rowcount = 0;
     JButton submitBtn = new JButton("add to basket");
-
- 
     
-    PresentationLayer(){
+    public PresentationLayer(){
 
         setMinimumSize(new Dimension(1000, 1000));
         setTitle("My Form");
@@ -96,7 +100,6 @@ public class PresentationLayer extends JFrame implements ActionListener {
                 
                 JCheckBox button1 = new JCheckBox("");
                 panel.add(button1);
-
                 
                 JButton  button2 = new JButton (new ImageIcon (getClass().getResource("/Pictures/"+product_name+".jpg")));
 //                button2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/"+product_name+".jpg")));
@@ -124,19 +127,35 @@ public class PresentationLayer extends JFrame implements ActionListener {
                 button6.setPreferredSize(new Dimension(2,2));
                 button6.setText(""+0);
                 panel.add(button6);
-                
+                // EVENT'S
+                button6.addKeyListener(new KeyAdapter() {
+                    public void keyReleased(KeyEvent e) {
+                        JTextField textField = (JTextField) e.getSource();
+                        String text = textField.getText();
+                        System.out.println("Text=" + text);
+                        if(button1.isSelected()) {
+                            System.out.println("product_name=" + product_name);
+                            button1.doClick();
+                            button1.doClick(10);
+                        }
+                   }
+                });
                 button1.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        
                         if(button1.isSelected()) {
+                            countItems++;
                             foods.add(new Food(product_id, product_name, QUANTITY, PRICE, Integer.parseInt(button6.getText()) ));
-//                          JOptionPane.showMessageDialog(panel, Integer.parseInt(button6.getText()));
+                            System.out.println(foods);
+                            //JOptionPane.showMessageDialog(panel, Integer.parseInt(button6.getText()));
                         } else {
+                            countItems--;
                             foods.remove(new Food(product_id, product_name, QUANTITY, PRICE, Integer.parseInt(button6.getText()) ));
+                            System.out.println(foods);
                         }
                     }
                 });
-                
             }
             result.close();
             st.close();
@@ -146,7 +165,6 @@ public class PresentationLayer extends JFrame implements ActionListener {
             System.out.print(e.getMessage());
             e.printStackTrace();
         }
-        
         
 //        for (int i = 0; i < rowcount; i++) {
 ////          final String str = ""+i;
@@ -173,20 +191,29 @@ public class PresentationLayer extends JFrame implements ActionListener {
         add(footerPanel);
         submitBtn.addActionListener(this);
         
-        setVisible(true);
+//        setVisible(true);
     }
-
+    
+    public void clearSelectionCount() {
+        countItems = 0;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == submitBtn) {
-            
 //            JOptionPane.showMessageDialog(null, foods);
-//            System.out.println(foods);
+            //System.out.println(foods);
             
-            this.dispose();
-            this.setVisible(false);
-            Basket.PresentationLayer BasketPLayer = new Basket.PresentationLayer(foods);
+//            this.setVisible(false);
+//            Basket.PresentationLayer BasketPLayer = new Basket.PresentationLayer(foods, countItems);
+//            BasketPLayer.setVisible(true);
+
+            Basket.PresentationLayer BasketPLayer = new Basket.PresentationLayer(foods, countItems);
             BasketPLayer.setVisible(true);
+            
+            setVisible(false);
+            dispose();
+//            this.dispose();
 //            Basket bpLayer = new Basket();
 
         }

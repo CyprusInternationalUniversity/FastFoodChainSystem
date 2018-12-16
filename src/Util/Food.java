@@ -71,8 +71,7 @@ public class Food {
                 return  (id == that.getId()) && 
                         title.equals(that.getTitle()) && 
                         (quantity == that.getQuantity()) && 
-                        (price == that.getPrice())  && 
-                        (numberOfQuantity == that.getnumberOfQuantity());
+                        (price == that.getPrice());
             }
             else {
                 return false;
