@@ -16,6 +16,9 @@ public class Food {
     private double price;
     private int numberOfQuantity;
     
+    public Food() {
+    }
+    
     public Food(int id, String title, int quantity, double price, int numberOfQuantity) {
         super();
         this.id = id;
@@ -24,6 +27,7 @@ public class Food {
         this.price = price;
         this.numberOfQuantity = numberOfQuantity;
     }
+    
 
     public int getId() {
         return id;
